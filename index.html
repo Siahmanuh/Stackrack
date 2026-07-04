@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Stackrack</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="masthead">
+  <h1 class="brand">Stackrack</h1>
+  <div class="header-glow"></div>
+</header>
+
+<!-- TOTALS ROW -->
+<div class="totals-bar">
+  <div class="total-card">
+    <div class="card-title">Total Spent</div>
+    <div class="card-body">
+      <span class="card-empty-a">No budget has<br>been made</span>
+      <span class="card-empty-b">No Money spent<br>...yet</span>
+    </div>
+    <div class="card-value" id="totalSpent" style="display:none;"></div>
+  </div>
+  <div class="total-card">
+    <div class="card-title">Total Budget</div>
+    <div class="card-body">
+      <span class="card-empty-center">No budget has<br>been made</span>
+    </div>
+    <div class="card-value" id="totalBudgeted" style="display:none;"></div>
+  </div>
+  <div class="total-card">
+    <div class="card-title">Remaining Budget</div>
+    <div class="card-body">
+      <span class="card-empty-right">No budget has<br>been made</span>
+    </div>
+    <div class="card-value" id="totalRemaining" style="display:none;"></div>
+  </div>
+</div>
+
+<!-- MAIN GRID -->
+<div class="main-grid">
+
+  <!-- LEFT: Budget panel + add form + achievements -->
+  <div class="left-col">
+
+    <div class="budget-panel">
+      <div id="budgetList"></div>
+    </div>
+
+    <form class="add-form" id="budgetForm">
+      <input type="text"   id="budgetName"  class="add-input" placeholder="Budget Name" required>
+      <input type="number" id="budgetLimit" class="add-input" placeholder="Budget limit" min="0" step="0.01" required>
+      <input type="text"   id="budgetDate"  class="add-input" placeholder="Budget Date">
+      <button type="submit" class="add-btn">Add</button>
+    </form>
+
+    <div class="achievements-section">
+      <div class="achievements-label">ACHIEVEMENTS</div>
+      <div class="achievements-row" id="achievementsRow"></div>
+    </div>
+
+  </div>
+
+  <!-- RIGHT: Spending graph -->
+  <div class="right-col">
+    <div class="graph-panel">
+      <div class="graph-title">General Spending Graph</div>
+      <select id="budgetSelector" class="budget-selector"></select>
+      <div class="graph-area" id="graphArea">
+        <div class="graph-empty" id="graphEmpty">No Budget Has<br>been made</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>

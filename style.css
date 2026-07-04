@@ -1,0 +1,447 @@
+/* =========================================================
+   style.css — Stackrack
+   Design: dark slate + mauve, Share Tech Mono throughout
+   ========================================================= */
+
+/* ---------- Tokens ---------- */
+:root {
+  --bg:          #2e3440;       /* page background */
+  --surface:     #3b4252;       /* card / panel surface */
+  --surface-2:   #434c5e;       /* lighter panel variant */
+  --border:      #4c566a;       /* subtle border */
+  --bar-bg:      #b0bec5;       /* progress bar background (light grey) */
+  --bar-fill:    #78909c;       /* progress bar fill (mid grey) */
+  --text:        #d8dee9;       /* primary text */
+  --text-dim:    #9aa3b2;       /* secondary / empty-state text */
+  --accent:      #a78ba0;       /* mauve accent (from header glow) */
+  --accent-2:    #c49ab8;       /* lighter mauve */
+  --danger:      #bf616a;       /* over-budget red */
+  --ok:          #a3be8c;       /* under-budget green */
+  --plus-bg:     #b0bec5;       /* + button fill */
+  --plus-fg:     #37474f;       /* + button text */
+  --mono:        'Share Tech Mono', monospace;
+}
+
+/* ---------- Reset ---------- */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--mono);
+  font-size: 14px;
+  min-height: 100vh;
+}
+
+/* ---------- Header ---------- */
+.masthead {
+  position: relative;
+  height: 88px;
+  display: flex;
+  align-items: center;
+  padding: 0 24px;
+  border: 1.5px solid #5b8ecf55;
+  background: linear-gradient(135deg, #2e3440 60%, #3b3050 100%);
+  overflow: hidden;
+  margin: 10px 10px 0;
+}
+
+.brand {
+  font-family: var(--mono);
+  font-size: 2.4rem;
+  font-weight: 400;
+  color: var(--text-dim);
+  letter-spacing: 1px;
+  position: relative;
+  z-index: 1;
+}
+
+/* the pink/mauve blurred glow blob top-right */
+.header-glow {
+  position: absolute;
+  right: 60px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 260px;
+  height: 60px;
+  background: radial-gradient(ellipse at center, #c07090cc 0%, #9060a060 50%, transparent 80%);
+  filter: blur(18px);
+  pointer-events: none;
+}
+
+/* ---------- Totals row ---------- */
+.totals-bar {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  padding: 10px 10px 0;
+}
+
+.total-card {
+  background: var(--surface);
+  border-radius: 6px;
+  padding: 14px 16px;
+  min-height: 160px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.card-title {
+  font-family: var(--mono);
+  font-size: 1.05rem;
+  color: var(--text);
+  letter-spacing: 0.5px;
+}
+
+.card-body {
+  flex: 1;
+  position: relative;
+  display: flex;
+}
+
+/* "Total Spent" has two small corner texts */
+.card-empty-a {
+  font-size: 0.78rem;
+  color: var(--text-dim);
+  line-height: 1.4;
+  align-self: flex-end;
+}
+
+.card-empty-b {
+  font-size: 0.78rem;
+  color: var(--text-dim);
+  line-height: 1.4;
+  text-align: right;
+  margin-left: auto;
+  align-self: flex-end;
+}
+
+/* "Total Budget" centre */
+.card-empty-center {
+  font-size: 0.78rem;
+  color: var(--text-dim);
+  line-height: 1.4;
+  text-align: right;
+  margin-left: auto;
+  align-self: flex-end;
+}
+
+/* "Remaining" right-aligned */
+.card-empty-right {
+  font-size: 0.78rem;
+  color: var(--text-dim);
+  line-height: 1.4;
+  text-align: right;
+  margin-left: auto;
+  align-self: flex-end;
+}
+
+.card-value {
+  font-size: 1.5rem;
+  font-weight: 400;
+  letter-spacing: 1px;
+  margin-top: auto;
+}
+
+.card-value.neg { color: var(--danger); }
+.card-value.pos { color: var(--ok); }
+
+/* ---------- Main 2-col grid ---------- */
+.main-grid {
+  display: grid;
+  grid-template-columns: 1fr 320px;
+  gap: 10px;
+  padding: 10px;
+  align-items: start;
+}
+
+/* ---------- Budget panel (left) ---------- */
+.left-col {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.budget-panel {
+  background: var(--surface-2);
+  border-radius: 6px 6px 0 0;
+  padding: 10px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-height: 180px;
+}
+
+/* Each budget row rendered by JS */
+.budget-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 0;
+}
+
+.budget-row-name {
+  width: 130px;
+  flex-shrink: 0;
+  font-family: var(--mono);
+  font-size: 0.85rem;
+  color: var(--text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.budget-row-bar-wrap {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.bar-track {
+  width: 100%;
+  height: 10px;
+  background: var(--bar-bg);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.bar-fill {
+  height: 100%;
+  background: var(--bar-fill);
+  border-radius: 2px;
+  transition: width 0.25s ease;
+}
+
+.bar-fill.over { background: var(--danger); }
+
+/* three grey placeholder lines shown when bar is at rest */
+.bar-placeholder {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.bar-line {
+  height: 8px;
+  background: var(--bar-bg);
+  border-radius: 2px;
+  opacity: 0.55;
+}
+
+.budget-row-over {
+  font-size: 0.65rem;
+  color: var(--danger);
+  white-space: nowrap;
+}
+
+.budget-row-btn {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: var(--plus-bg);
+  color: var(--plus-fg);
+  border: none;
+  font-size: 1.1rem;
+  line-height: 1;
+  cursor: pointer;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--mono);
+  transition: background 0.15s;
+}
+
+.budget-row-btn:hover { background: var(--accent-2); color: #fff; }
+
+.budget-empty-note {
+  font-size: 0.78rem;
+  color: var(--text-dim);
+  padding: 16px 4px;
+}
+
+/* ---------- Add form ---------- */
+.add-form {
+  display: flex;
+  gap: 6px;
+  background: var(--surface-2);
+  border-radius: 0 0 6px 6px;
+  padding: 10px 12px 12px;
+  border-top: 1px solid var(--border);
+  flex-wrap: nowrap;
+}
+
+.add-input {
+  font-family: var(--mono);
+  font-size: 0.82rem;
+  background: var(--surface);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 7px 10px;
+  flex: 1;
+  min-width: 0;
+}
+
+.add-input::placeholder { color: var(--text-dim); }
+.add-input:focus { outline: 1.5px solid var(--accent); }
+
+.add-btn {
+  font-family: var(--mono);
+  font-size: 0.85rem;
+  background: var(--surface);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 7px 18px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.15s, color 0.15s;
+}
+
+.add-btn:hover { background: var(--accent); color: #fff; border-color: var(--accent); }
+
+/* ---------- Achievements ---------- */
+.achievements-section {
+  margin-top: 14px;
+}
+
+.achievements-label {
+  font-size: 0.72rem;
+  color: var(--text-dim);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+
+.achievements-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.ach-badge {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: var(--accent);
+  opacity: 0.55;
+  transition: opacity 0.2s;
+}
+
+.ach-badge.earned { opacity: 1; box-shadow: 0 0 8px var(--accent-2); }
+
+/* ---------- Right col: graph ---------- */
+.right-col {
+  display: flex;
+  flex-direction: column;
+}
+
+.graph-panel {
+  background: var(--surface);
+  border-radius: 6px;
+  padding: 14px 14px 12px;
+}
+
+.graph-title {
+  font-family: var(--mono);
+  font-size: 0.9rem;
+  color: var(--text);
+  letter-spacing: 0.3px;
+  margin-bottom: 12px;
+}
+
+.graph-area {
+  position: relative;
+  height: 180px;
+  background: var(--surface-2);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+canvas#spendingChart {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.graph-empty {
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  font-size: 0.75rem;
+  color: var(--text-dim);
+  line-height: 1.5;
+  pointer-events: none;
+}
+
+/* ---------- Focus / accessibility ---------- */
+button:focus-visible,
+input:focus-visible,
+select:focus-visible {
+  outline: 2px solid var(--accent-2);
+  outline-offset: 2px;
+}
+
+.budget-selector {
+  font-family: var(--mono);
+  font-size: 0.8rem;
+  background: var(--surface-2);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 5px 8px;
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+.budget-row.selected .budget-row-name { color: var(--accent-2); }
+
+.bar-sub { font-size: 0.7rem; color: var(--text-dim); margin-top: 3px; }
+.over-tag { color: var(--danger); }
+
+.row-spend-wrap { display: flex; gap: 4px; }
+.spend-input {
+  font-family: var(--mono);
+  font-size: 0.78rem;
+  width: 70px;
+  background: var(--surface);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 3px 6px;
+}
+.spend-btn {
+  background: var(--plus-bg);
+  color: var(--plus-fg);
+  border: none;
+  border-radius: 4px;
+  padding: 3px 8px;
+  cursor: pointer;
+  font-size: 1rem;
+  font-family: var(--mono);
+}
+.spend-btn:hover { background: var(--accent-2); color: #fff; }
+
+.remove-btn {
+  background: transparent;
+  color: var(--text-dim);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 3px 7px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-family: var(--mono);
+}
+.remove-btn:hover { background: var(--danger); color: #fff; border-color: var(--danger); }
+
+.ach-none { font-size: 0.75rem; color: var(--text-dim); }
+
+/* ---------- Responsive ---------- */
+@media (max-width: 700px) {
+  .main-grid { grid-template-columns: 1fr; }
+  .totals-bar { grid-template-columns: 1fr; }
+  .masthead { margin: 6px 6px 0; }
+  .add-form { flex-wrap: wrap; }
+}
